@@ -1,0 +1,11 @@
+{
+  "id": "DP-5501",
+  "guest_name": "Aiko Tanaka",
+  "reservation_ref": "RES-8801",
+  "comms_conversation_id": "conv-8801",
+  "amount": 520.00,
+  "reason_code": "10.4 - Fraud, card not present",
+  "card_scheme": "Mastercard",
+  "deadline_offset": 8,
+  "venue": "hotel"
+}

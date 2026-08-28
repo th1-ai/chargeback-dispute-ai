@@ -1,0 +1,37 @@
+[
+  {
+    "reservation_ref": "RES-1071",
+    "accepted_at": "2026-08-02T14:03:00+00:00",
+    "ip": "203.0.113.45",
+    "checkout_page_version": "checkout-v3",
+    "policy_version": "2026.1"
+  },
+  {
+    "reservation_ref": "RES-2044",
+    "accepted_at": "2026-09-01T09:41:00+00:00",
+    "ip": "192.0.2.22",
+    "checkout_page_version": "checkout-v3",
+    "policy_version": "2026.1"
+  },
+  {
+    "reservation_ref": "RES-2210",
+    "accepted_at": "2026-08-15T18:27:00+00:00",
+    "ip": "203.0.113.90",
+    "checkout_page_version": "checkout-v3",
+    "policy_version": "2026.1"
+  },
+  {
+    "reservation_ref": "RES-8801",
+    "accepted_at": "2026-07-28T11:12:00+00:00",
+    "ip": "192.0.2.7",
+    "checkout_page_version": "checkout-v2",
+    "policy_version": "2025.4"
+  },
+  {
+    "reservation_ref": "RES-9002",
+    "accepted_at": "2026-10-01T16:55:00+00:00",
+    "ip": "203.0.113.201",
+    "checkout_page_version": "checkout-v3",
+    "policy_version": "2026.1"
+  }
+]

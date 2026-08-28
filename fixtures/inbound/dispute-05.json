@@ -1,0 +1,11 @@
+{
+  "id": "DP-6100",
+  "guest_name": "Camille Duarte",
+  "reservation_ref": "RES-9002",
+  "comms_conversation_id": "conv-9002",
+  "amount": 450.00,
+  "reason_code": "4855 - Goods or services not received",
+  "card_scheme": "Visa",
+  "deadline_offset": 12,
+  "venue": "restaurant"
+}

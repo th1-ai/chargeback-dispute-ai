@@ -1,0 +1,90 @@
+[
+  {
+    "id": "RES-1071",
+    "external_ref": "RES-1071",
+    "status": "confirmed",
+    "check_in": "2026-09-14",
+    "check_out": "2026-09-17",
+    "room_type_id": "deluxe-sea",
+    "room_type_name": "Deluxe Sea View",
+    "room_id": "214",
+    "adults": 2,
+    "children": 0,
+    "source": "Direct",
+    "total": 3760.00,
+    "balance": 0.0,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-1071", "first_name": "Marcus", "last_name": "Webb",
+      "email": "marcus.webb@example.com", "phone": "+1 555 0110",
+      "country": "US", "language": "en"
+    },
+    "notes": "Deposit taken at booking per cancellation policy."
+  },
+  {
+    "id": "RES-2044",
+    "external_ref": "RES-2044",
+    "status": "confirmed",
+    "check_in": "2026-10-02",
+    "check_out": "2026-10-04",
+    "room_type_id": "classic-king",
+    "room_type_name": "Classic King",
+    "room_id": "108",
+    "adults": 1,
+    "children": 0,
+    "source": "Booking.com",
+    "total": 1200.00,
+    "balance": 0.0,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-2044", "first_name": "Priya", "last_name": "Anand",
+      "email": "priya.anand@example.com", "phone": "+1 555 0122",
+      "country": "GB", "language": "en"
+    },
+    "notes": "Deposit taken at booking per cancellation policy."
+  },
+  {
+    "id": "RES-2210",
+    "external_ref": "RES-2210",
+    "status": "confirmed",
+    "check_in": "2026-09-20",
+    "check_out": "2026-09-22",
+    "room_type_id": "classic-king",
+    "room_type_name": "Classic King",
+    "room_id": "112",
+    "adults": 2,
+    "children": 0,
+    "source": "Direct",
+    "total": 640.00,
+    "balance": 0.0,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-2210", "first_name": "Jonas", "last_name": "Berg",
+      "email": "jonas.berg@example.com", "phone": "+1 555 0133",
+      "country": "SE", "language": "en"
+    },
+    "notes": "Deposit taken at booking per cancellation policy. Guest stayed the full booking."
+  },
+  {
+    "id": "RES-9002",
+    "external_ref": "RES-9002",
+    "status": "confirmed",
+    "check_in": "2026-11-08",
+    "check_out": "2026-11-08",
+    "room_type_id": "private-dining",
+    "room_type_name": "Private Dining Room - Autumn Tasting Menu",
+    "room_id": "PDR-1",
+    "adults": 12,
+    "children": 0,
+    "source": "Website",
+    "total": 1800.00,
+    "balance": 0.0,
+    "currency": "EUR",
+    "guest": {
+      "id": "g-9002", "first_name": "Camille", "last_name": "Duarte",
+      "email": "camille.duarte@example.com", "phone": "+1 555 0144",
+      "country": "FR", "language": "fr"
+    },
+    "notes": "Event deposit taken at booking per cancellation policy. Table held for the full party."
+  }
+]

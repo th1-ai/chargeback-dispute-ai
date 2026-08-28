@@ -1,0 +1,11 @@
+{
+  "id": "DP-3312",
+  "guest_name": "Priya Anand",
+  "reservation_ref": "RES-2044",
+  "comms_conversation_id": "",
+  "amount": 300.00,
+  "reason_code": "4853 - Services not received",
+  "card_scheme": "Visa",
+  "deadline_offset": 10,
+  "venue": "hotel"
+}

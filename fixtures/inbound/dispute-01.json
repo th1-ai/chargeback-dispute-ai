@@ -1,0 +1,11 @@
+{
+  "id": "GM-20138",
+  "guest_name": "Marcus Webb",
+  "reservation_ref": "RES-1071",
+  "comms_conversation_id": "conv-1071",
+  "amount": 940.00,
+  "reason_code": "4853 - Services not received",
+  "card_scheme": "Mastercard",
+  "deadline_offset": 6,
+  "venue": "hotel"
+}

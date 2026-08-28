@@ -1,0 +1,11 @@
+{
+  "id": "DP-4470",
+  "guest_name": "Jonas Berg",
+  "reservation_ref": "RES-2210",
+  "comms_conversation_id": "conv-2210",
+  "amount": 160.00,
+  "reason_code": "4853 - Services not received",
+  "card_scheme": "Visa",
+  "deadline_offset": 2,
+  "venue": "hotel"
+}

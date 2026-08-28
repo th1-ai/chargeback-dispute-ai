@@ -1,0 +1,135 @@
+# ---------------------------------------------------------------------------
+# agent.yaml - Chargeback & Dispute AI's own knobs.
+#
+# `make setup` copies this file to config/agent.yaml. Edit THAT one; this
+# example stays as a clean reference. See config/hotel.yaml for the systems
+# every agent shares (mode, llm provider, review approvals).
+#
+# This agent assembles evidence packets for chargebacks and drafts the
+# representment. It never submits one on its own - see docs/safety.md.
+# ---------------------------------------------------------------------------
+
+# --- Which systems this agent actually READS through core/adapters ---------
+# The disputes themselves come from the dispute feed (data/imports, or your
+# acquirer's export) and the accepted terms from the terms store - neither is
+# a core adapter. Of the core ones, this agent READS the reservation behind a
+# dispute (pms, `get_reservation`) and the guest correspondence thread (email,
+# `fetch_thread`). It never READS messaging: `systems.messaging` is used only
+# to send the SLA staff alert in tools/digest.py (docs/integrations.md,
+# "Messaging"). So messaging is left out here on purpose - a property that
+# takes its alerts from the daily digest email keeps
+# `systems.messaging.adapter: mock` forever and must not be warned that its
+# packets are shipped sample data. Listing pms/email still warns you
+# correctly if THOSE are left on mock once you are running for real.
+systems_used: [pms, email]
+
+# Reason code -> human label + which evidence exhibits that code actually
+# needs. A dispute's own reason_code is matched by prefix (case-insensitive,
+# longest match wins); anything unmatched falls back to `default`, which
+# requires everything. See docs/how-it-works.md, design decision 4.
+reason_code_map:
+  "4853":
+    label: "Services not received"
+    requires: [folio, stay, comms, policy]
+  "4855":
+    label: "Goods or services not received"
+    requires: [folio, stay, comms, policy]
+  "13.1":
+    label: "Not as described or defective"
+    requires: [folio, stay, comms, policy]
+  "10.4":
+    label: "Fraud - card not present"
+    requires: [folio, stay, policy]   # the acceptance record matters more than comms here
+  default:
+    label: "Reason not on file"
+    requires: [folio, stay, comms, policy]
+
+# Whether the full evidence pack (comms + accepted-terms sections) is built
+# at all. Off is a deliberate degraded mode, not a way to submit faster -
+# see docs/how-it-works.md and docs/safety.md. It is independent of, and
+# stricter than, reason_code_map above: with this off, comms and policy are
+# never on file no matter what the reason code requires.
+rules:
+  full_evidence_pack: true
+
+# Keyword scan on the guest's OWN first message (never on the property's
+# side of the thread). Plain substring match, case-insensitive - good
+# enough to spot a guest cancelling in their own words, and cheap enough to
+# run with no model call at all. See tools/engine.py:guest_words_help /
+# guest_words_hurt.
+#
+# One entry per language code (core.i18n's two-letter codes, e.g. the same
+# ones in hotel.languages) - a language with NO entry here is never scored:
+# tools/engine.py:assemble_packet detects the guest's own message language
+# and, when there is no phrase set for it, holds the case as needs_human
+# ("no <lang> phrase set configured") instead of silently reading it as
+# neutral. Add an entry for every language you actually get disputes in.
+guest_language:
+  en:
+    helps_case:
+      - "cancel"
+      - "no longer"
+      - "won't be able to make it"
+      - "will not be able to make it"
+      - "need to cancel"
+      - "have to cancel"
+    hurts_case:
+      - "never received"
+      - "did not receive"
+      - "was not provided"
+      - "never worked"
+      - "did not work"
+      - "not what was promised"
+
+# Below this evidence-strength score (0-100), the recommendation is "do not
+# submit yet" even if a person could still choose to approve and send it
+# anyway - the number never blocks a human decision, only the agent's own
+# wording. See tools/engine.py:score_evidence.
+evidence_strength_threshold: 70
+
+# How many days before the scheme deadline the daily digest calls a dispute
+# urgent (and can notify_staff about it). See docs/how-it-works.md, design
+# decision 6.
+sla:
+  alert_days_before: 3
+
+# Where the dispute feed and the terms-acceptance record come from. Both are
+# small readers in tools/, not core adapters yet - see docs/integrations.md.
+dispute_feed:
+  adapter: mock   # mock | csv
+terms_store:
+  adapter: mock   # mock | csv
+
+# The optional cosmetic case-note appended to the daily digest. It reads run
+# stats only - never a packet's legal text - and is never filed as part of
+# a representment. Off by default: it is a nice-to-have, not part of the
+# roster promise. See docs/how-it-works.md.
+narrate:
+  enabled: false
+  knowledge: [property.md]
+
+# How often `tools/run.py --watch` polls for new disputes, and what
+# `make schedule` prints by default for the dispute-packets job. The digest
+# has its own cadence below.
+poll_seconds: 3600   # hourly
+
+digest:
+  hour: 8   # local hour tools/digest.py is meant to run at - this is the
+            # source of truth for WHEN; tools/schedule.py turns it into the
+            # dispute-digest cron/launchd/systemd cadence below, computing
+            # "0 <digest.hour> * * *" itself (never hand-edit that cadence).
+
+# `python3 tools/schedule.py --all` (or `make schedule ARGS="--all"`) prints
+# one cron/launchd/systemd snippet per job below, reading its own command
+# and cadence - see docs/how-it-works.md, "What runs when". The
+# dispute-digest job's cadence below is a fallback only, used if digest.hour
+# above is ever unset - tools/schedule.py computes the real one from
+# digest.hour every time, so the two can never drift apart.
+schedule:
+  dispute-packets:
+    command: "tools/run.py --once"
+    cadence: hourly
+  dispute-digest:
+    command: "tools/digest.py"
+    hour_from: digest.hour  # the cron is computed from digest.hour above
+    cadence: morning        # fallback only, used if digest.hour is ever unset
